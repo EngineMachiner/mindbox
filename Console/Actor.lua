@@ -1,7 +1,9 @@
 
+local scale = SCREEN_HEIGHT / 720
+
+
 local input = table.pack(...)
 
-local scale = SCREEN_HEIGHT / 720
 
 local function console() return mindbox.Console end
 
@@ -33,7 +35,7 @@ local window = Def.Sprite {
         mindbox.Console = self:GetParent()
 
 
-        self:zoom( scale )        local color = color("#909090")
+        local color = color("#909090")
 
         self:diffuse(color):SetTextureFiltering(false)
 
@@ -48,7 +50,7 @@ local window = Def.Sprite {
         
         if not input[1] then return end
 
-        mindbox.print( table.unpack(input) )
+        mindbox.print(  table.unpack(input)  )
     
     end
 
@@ -76,13 +78,13 @@ local function quad()
 end
 
 
-return Def.ActorFrame {
+local main = Def.ActorFrame {
 
-	InitCommand=function(self)
+	PostInitCommand=function(self)
         
         local w = self:GetWidth()
 
-        self:CenterY():x( w * 0.625 ):diffusealpha(0)
+        self:x( w * 0.625 ):diffusealpha(0)
 
         self:draworder(100) -- Just in case to show up further.
     
@@ -117,9 +119,7 @@ return Def.ActorFrame {
 
 		PostInitCommand=function(self)
 
-            local h = self:GetHeight() * 0.25
-
-            self:SetHeight(h):y( - h * 1.5 )
+            local h = self:GetHeight() * 0.25       self:SetHeight(h):y( - h * 1.5 )
 
 			self:diffusealpha(0):fadebottom(0.5)
 
@@ -127,14 +127,10 @@ return Def.ActorFrame {
 
 		FadeCommand=function(self)
 
-			if not showFading then return end
-
-            self:diffusealpha(0)
+			if not showFading then return end       self:diffusealpha(0)
 
 
-            local scroll = console().scroll
-
-			if not scroll then return end
+            local scroll = console().scroll         if not scroll then return end
 
 
             local time =  console().time - 1
@@ -149,9 +145,7 @@ return Def.ActorFrame {
 
 		PostInitCommand=function(self)
 
-            local h = self:GetHeight() * 0.25
-
-            self:SetHeight(h):y( h * 1.5 )
+            local h = self:GetHeight() * 0.25       self:SetHeight(h):y( h * 1.5 )
 
             self:diffusealpha(0):fadetop(0.5)
 
@@ -159,14 +153,10 @@ return Def.ActorFrame {
 
 		FadeCommand=function(self)
 
-			if not showFading then return end
-
-            self:diffusealpha(0)
+			if not showFading then return end       self:diffusealpha(0)
 
 
-            local scroll = console().scroll
-
-			if not scroll then return end
+            local scroll = console().scroll         if not scroll then return end
 
 
             local time =  console().time - 1
@@ -181,11 +171,9 @@ return Def.ActorFrame {
 
 	Def.ActorFrame { -- Console title.
 
-		PostInitCommand=function(self) 
+		PostInitCommand=function(self)
             
-            local h = console():GetHeight()         local offset = 24 * scale
-
-            self:y( - h * 0.5 + offset ):zoom( scale * 0.5 )
+            local h = console():GetHeight()         self:y( - h * 0.5 + 24 ):zoom(0.5)
         
         end,
 
@@ -195,9 +183,7 @@ return Def.ActorFrame {
 
                 local color = color("#202020")
 
-				self:setsize(600, 45):diffuse(color)
-
-				self:fadeleft(0.25):faderight(0.25)
+				self:setsize(600, 45):diffuse(color)        self:fadeleft(0.25):faderight(0.25)
 
 			end
 
@@ -216,5 +202,11 @@ return Def.ActorFrame {
 		}
 
 	}
+
+}
+
+return Def.ActorFrame {
+    
+    InitCommand=function(self) self:zoom(scale):CenterY() end,    main
 
 }

@@ -1,6 +1,4 @@
 
-local scale = SCREEN_HEIGHT / 720
-
 local function console() return mindbox.Console end
 
 
@@ -17,9 +15,7 @@ local function size()
 
     local p = console()             local w, h = p:GetWidth(), p:GetHeight()
 
-    w = w * resScale * 0.75         w = w / scale
-    
-    h = h * resScale * 0.9          h = h / scale
+    w = w * resScale * 0.75         h = h * resScale * 0.9
 
     return w, h 
 
@@ -54,12 +50,12 @@ local function setTextPos(self)
     local timeOn = timeOn / self:GetZoom()
 
     
-    local offset = 100
+    local offset = 100      local y = h2 * 0.5 + offset
+    
+    self:y(y)
 
-    local y = h2 * 0.5 + offset        self:y(y)
 
-
-    console().scroll = false            console().time = timeOn
+    p.scroll = false            p.time = timeOn
 
 
     -- Scrolling limit.
@@ -74,7 +70,7 @@ local function setTextPos(self)
     self:sleep(timeOn):linear(time):y(y)
 
 
-    console().scroll = true             console().time = timeOn * 2 + time
+    p.scroll = true             p.time = timeOn * 2 + time
 
 
     return self
@@ -155,7 +151,7 @@ return Def.ActorFrame {
 
             local texture = AFT:GetTexture()
 
-            self:zoom( scale / resScale ):SetTexture(texture)
+            self:zoom( 1 / resScale ):SetTexture(texture)
 
             self:fadetop(0.1):fadebottom(0.1)
 
