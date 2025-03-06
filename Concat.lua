@@ -173,6 +173,8 @@ local function notEmpty(a)
 
 end
 
+local isVector = Astro.Vector.isVector
+
 local function pack(tbl)
 
     local former = tbl -- We need it later.
@@ -218,6 +220,8 @@ local function pack(tbl)
 
     local function addValue( v, indent )
     
+        if isVector(v) then add( tostring(v) ) return end
+
         if isTable(v) then recursivePack( v, indent ) return end
 
         local name = format(v)        add(name)
