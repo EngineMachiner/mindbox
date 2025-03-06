@@ -147,7 +147,7 @@ end
 
 local function copy(tbl)
 
-    local copy = Astro.Table.Copy.shallow(tbl)
+    local astro = Astro.Table       local copy = astro.Copy.shallow(tbl)
 
     -- Parse indexed nil values to strings. This is why there's a copy.
 

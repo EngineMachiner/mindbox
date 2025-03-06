@@ -9,11 +9,11 @@ local timeOn = config.timeOn
 local fontTheme = mindbox.Theme.Font
 local fontFile = fontTheme.File
 
-local resScale = 2
+local resScale = 2 -- Resolution scale.
 
 local function size()
 
-    local p = console()             local w, h = p:GetWidth(), p:GetHeight()
+    local w, h = console():GetSize()
 
     w = w * resScale * 0.75         h = h * resScale * 0.9
 
@@ -45,22 +45,16 @@ local function setTextPos(self)
 
     local p = console()         local w, h1 = size()
 
-    local h2 = self:GetZoomedHeight()
-
-    local timeOn = timeOn / self:GetZoom()
+    local h2 = self:GetZoomedHeight()       local timeOn = timeOn / self:GetZoom()
 
     
-    local offset = 100      local y = h2 * 0.5 + offset
-    
-    self:y(y)
+    local offset = 100      local y = h2 * 0.5 + offset     self:y(y)
 
 
     p.scroll = false            p.time = timeOn
 
-
-    -- Scrolling limit.
-
-    if h2 <= h1 then return self end
+    
+    if h2 <= h1 then return self end -- Scrolling limit.
 
 
     local length = h2 - h1              local time = length * timeOn / h1

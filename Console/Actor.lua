@@ -26,8 +26,8 @@ local margin = 0.915 -- The float based on the window's margin.
 
 local windowFile = mindbox.Theme.Window
 
-local window = Def.Sprite {
-
+local window = tapLua.Sprite {
+    
     Name = "Window",        Texture = windowFile,
 
     InitCommand=function(self)
@@ -40,9 +40,9 @@ local window = Def.Sprite {
         self:diffuse(color):SetTextureFiltering(false)
 
 
-        local w, h = self:GetZoomedWidth(), self:GetZoomedHeight()
+        local w, h = self:GetSize()
 
-        console():setsize(w, h):queuecommand("PostInit")
+        console():setsize( w, h ):queuecommand("PostInit")
 
     end,
 
@@ -65,11 +65,9 @@ local function quad()
 
         PostInitCommand=function(self)
 
-            local p = self:GetParent()
+            local w, h = self:GetParent():GetSize()
 
-            local width, height = p:GetWidth(), p:GetHeight()
-
-            self:setsize( width * margin, height * margin )
+            self:setsize( w * margin, h * margin )
 
         end
 
@@ -78,13 +76,11 @@ local function quad()
 end
 
 
-local main = Def.ActorFrame {
+local mainActorFrame = tapLua.ActorFrame {
 
 	PostInitCommand=function(self)
         
-        local w = self:GetWidth()
-
-        self:x( w * 0.625 ):diffusealpha(0)
+        local w = self:GetWidth()       self:x( w * 0.625 ):diffusealpha(0)
 
         self:draworder(100) -- Just in case to show up further.
     
@@ -107,11 +103,10 @@ local main = Def.ActorFrame {
 
 	end,
 
-    quad() .. { -- Background.
+    
+    -- Background.
 
-        InitCommand=function(self) self:diffusealpha(0.925) end
-
-    },
+    quad() .. {  InitCommand=function(self) self:diffusealpha(0.925) end  },
     
     dofile( mindbox.Path .. "Console/Text.lua" ),
 
@@ -183,7 +178,7 @@ local main = Def.ActorFrame {
 
                 local color = color("#202020")
 
-				self:setsize(600, 45):diffuse(color)        self:fadeleft(0.25):faderight(0.25)
+				self:setsize( 600, 45 ):diffuse(color)        self:fadeleft(0.25):faderight(0.25)
 
 			end
 
@@ -207,6 +202,6 @@ local main = Def.ActorFrame {
 
 return Def.ActorFrame {
     
-    InitCommand=function(self) self:zoom(scale):CenterY() end,    main
+    mainActorFrame,         InitCommand=function(self) self:zoom(scale):CenterY() end
 
 }
