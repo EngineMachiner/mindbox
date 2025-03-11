@@ -39,15 +39,20 @@ local window = tapLua.Sprite {
 
         self:diffuse(color):SetTextureFiltering(false)
 
+        self:queuecommand("SetSize")
 
-        local w, h = self:GetSize()
+    end,
 
-        console():setsize( w, h ):queuecommand("PostInit")
+    SetSizeCommand=function(self)
+
+        local size = self:GetSize()
+
+        console():setSizeVector(size):queuecommand("PostInit")
 
     end,
 
     PostInitCommand=function()
-        
+
         if not input[1] then return end
 
         mindbox.print(  table.unpack(input)  )
@@ -59,15 +64,15 @@ local window = tapLua.Sprite {
 
 local function quad()
 
-	return Def.Quad {
+	return tapLua.Quad {
 
 		InitCommand=function(self) self:diffuse( Color.Black ) end,
 
         PostInitCommand=function(self)
 
-            local w, h = self:GetParent():GetSize()
+            local size = self:GetParent():GetSize() * margin
 
-            self:setsize( w * margin, h * margin )
+            self:setSizeVector(size)
 
         end
 
@@ -78,9 +83,11 @@ end
 
 local mainActorFrame = tapLua.ActorFrame {
 
+    InitCommand=function(self) self:diffusealpha(0) end,
+
 	PostInitCommand=function(self)
         
-        local w = self:GetWidth()       self:x( w * 0.625 ):diffusealpha(0)
+        local w = self:GetWidth()       self:x( w * 0.625 )
 
         self:draworder(100) -- Just in case to show up further.
     
@@ -172,13 +179,13 @@ local mainActorFrame = tapLua.ActorFrame {
         
         end,
 
-		Def.Quad {
+		tapLua.Quad {
 
 			InitCommand=function(self)
 
                 local color = color("#202020")
 
-				self:setsize( 600, 45 ):diffuse(color)        self:fadeleft(0.25):faderight(0.25)
+				self:setsize( 600, 45 ):diffuse(color):fadeHorizontally(0.25)
 
 			end
 

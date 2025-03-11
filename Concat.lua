@@ -110,9 +110,7 @@ end
 
 local function tableFormat( a, s )
 
-    local isTable = isTable(a)
-
-    if showID then return s end
+    local isTable = isTable(a)      if showID then return s end
 
     
     -- Remove the addresses.

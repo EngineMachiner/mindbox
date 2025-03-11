@@ -1,6 +1,7 @@
 
-local function console() return mindbox.Console end
+local Vector = Astro.Vector
 
+local function console() return mindbox.Console end
 
 local config = mindbox.Config
 local maxZoom = config.maxZoom
@@ -11,13 +12,13 @@ local fontFile = fontTheme.File
 
 local resScale = 2 -- Resolution scale.
 
-local function size()
+local function size( args )
 
-    local w, h = console():GetSize()
+    local w, h = console():GetSize(true)
 
     w = w * resScale * 0.75         h = h * resScale * 0.9
 
-    return w, h 
+    return not args and Vector( w, h ) or w, h
 
 end
 
@@ -33,7 +34,7 @@ end
 
 local function setTextZoom(self)
     
-    local w1 = size()           local w2 = self:GetWidth()
+    local w1 = size(true)           local w2 = self:GetWidth()
 
     local zoom = w1 / w2        zoom = math.min( maxZoom, zoom )
 
@@ -43,7 +44,7 @@ end
 
 local function setTextPos(self)
 
-    local p = console()         local w, h1 = size()
+    local p = console()         local w, h1 = size(true)
 
     local h2 = self:GetZoomedHeight()       local timeOn = timeOn / self:GetZoom()
 
@@ -77,13 +78,13 @@ return Def.ActorFrame {
 
     PrintCommand=function(self) self:sleep(0):queuecommand("Start") end,
 
-    Def.ActorFrameTexture {
+    tapLua.Actor {
 
-        Name = "TextAFT",
+        Name = "TextAFT",       Class = "ActorFrameTexture",
 
         PostInitCommand=function(self)
 
-            local w, h = size()     self:setsize( w, h )
+            local size = size()     self:setSizeVector(size)
             
             self:EnableAlphaBuffer(true):Create()
 
@@ -121,15 +122,15 @@ return Def.ActorFrame {
                 
         },
 
-        Def.Quad { -- This quad helps me see the texture's size.
+        tapLua.Quad { -- This quad helps me see the texture's size.
             
             InitCommand=function(self) self:diffusealpha(0) end,
 
             PostInitCommand=function(self)
             
-                local w, h = size()     self:setsize( w * resScale, h * resScale )
+                local size = size() * resScale          self:setSizeVector(size)
 
-            end 
+            end
         
         }
 
