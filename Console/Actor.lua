@@ -24,14 +24,14 @@ local fontFile = fontTheme.File
 
 local margin = 0.915 -- The float based on the window's margin.
 
-local windowFile = mindbox.Theme.Window
+local function windowFile() return mindbox.Theme.Window end
 
 local window = tapLua.Sprite {
     
-    Name = "Window",        Texture = windowFile,
+    Name = "Window",        Texture = windowFile(),
 
     InitCommand=function(self)
-
+        
         mindbox.Console = self:GetParent()
 
 
@@ -42,6 +42,8 @@ local window = tapLua.Sprite {
         self:queuecommand("SetSize")
 
     end,
+
+    ReloadCommand=function(self) self:Load( windowFile() ) end,
 
     SetSizeCommand=function(self)
 

@@ -8,7 +8,8 @@ local maxZoom = config.maxZoom
 local timeOn = config.timeOn
 
 local fontTheme = mindbox.Theme.Font
-local fontFile = fontTheme.File
+
+local function fontFile() return fontTheme.File end
 
 local resScale = 2 -- Resolution scale.
 
@@ -94,13 +95,21 @@ return Def.ActorFrame {
 
         Def.BitmapText {
 
-            Font = fontFile,
+            Font = fontFile(),
 
             InitCommand=function(self)
                 
                 self.color = textColor          self.setZoom = setTextZoom
 
                 self.setPos = setTextPos        self:halign(0)
+
+            end,
+
+            ReloadCommand=function(self)
+
+                if not self.LoadFromFont then return end
+
+                self:LoadFromFont( fontFile() )
 
             end,
 
