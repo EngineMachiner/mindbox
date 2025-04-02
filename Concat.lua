@@ -149,6 +149,8 @@ local function copy(tbl)
 
     -- Parse indexed nil values to strings. This is why there's a copy.
 
+    -- Iterating the Def table freezes the game forever: https://github.com/TeamRizu/OutFox/issues/769
+
 	for i,v in ipairs(tbl) do if isNil(v) then copy[i] = "nil" end end
 
     -- If you need to erase values, you should do it here.
@@ -184,11 +186,7 @@ local function pack(tbl)
 
     local processed = {}
     
-    local function wasProcessed(tbl)
-    
-        local id = tostring(tbl)      return processed[id]
-      
-    end
+    local function wasProcessed(tbl) return processed[tbl] end
     
 
     local function isGap(a, b) 
@@ -236,13 +234,13 @@ local function pack(tbl)
         local isEmpty = table.isEmpty(copy)         local isFormer = tbl == former
         
         
-        local id = tostring(tbl)        local cycleName = cycleName(name)
+        local cycleName = cycleName(name)
         
         cycleName = concat( "<cycle>", cycleName )
 
-        if processed[id] then add(cycleName) return end
+        if processed[tbl] then add(cycleName) return end
         
-        processed[id] = true
+        processed[tbl] = true
         
 
         local curly = concat( name, '{' )
