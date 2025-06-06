@@ -90,8 +90,6 @@ local mainActorFrame = tapLua.ActorFrame {
 	PostInitCommand=function(self)
         
         local w = self:GetWidth()       self:x( w * 0.625 )
-
-        self:draworder(100) -- Just in case to show up further.
     
     end,
 
