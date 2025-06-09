@@ -9,36 +9,30 @@
 
 ]]
 
-local astro = Astro.Type
+------------------------------------------------------------------------------------------------------------------------
 
-local isNumber = astro.isNumber
-local isString = astro.isString
-local isTable = astro.isTable
-local isNil = astro.isNil
+local astro = Astro.Type                    local isVector = Astro.Vector.isVector
 
-astro = Astro.Table
-
-local table = astro.table {
-    
-    "insert", "pack", "concat",         isEmpty = astro.isEmpty
-
-}
+local isNumber = astro.isNumber             local isString = astro.isString
+local isTable = astro.isTable               local isNil = astro.isNil
 
 ------------------------------------------------------------------------------------------------------------------------
 
 astro = Astro.Config.Concat
 
-local showID = astro.showID
-local showIndex = astro.showIndex
-local wideMode = astro.wideMode
-local indentation = astro.indentation
+local showID = astro.showID                         local showIndex = astro.showIndex
+local wideMode = astro.wideMode                     local indentation = astro.indentation
 local keyQuotes = astro.keyQuotes
 
 local showChildren = mindbox.Config.showChildren
 
 ------------------------------------------------------------------------------------------------------------------------
 
-local isObject = tapLua.Type.isObject
+astro = Astro.Table         local isObject = tapLua.Type.isObject
+
+local table = astro.table { "insert", "pack", "concat",         isEmpty = astro.isEmpty }
+
+------------------------------------------------------------------------------------------------------------------------
 
 -- Remove useless data.
 
@@ -46,13 +40,9 @@ local function purge(tbl) tbl.ctx = nil end
 
 local function onObject( former, copy )
     
-    purge(copy)
+    purge(copy)         local isValid = showChildren and isObject(former)
 
-    local isValid = showChildren and isObject(former)
-
-    isValid = isValid and former.GetChildren
-
-    if not isValid then return end
+    isValid = isValid and former.GetChildren            if not isValid then return end
 
     copy.Children = former:GetChildren()
 
@@ -94,9 +84,8 @@ end
 
 local sequences = {
 
-    ['\a'] = '\\a',     ['\b'] = '\\b',     ['\f'] = '\\f',
-    ['\n'] = '\\n',     ['\r'] = '\\r',     ['\t'] = '\\t',
-    ['\v'] = '\\v'
+    ['\a'] = '\\a',     ['\b'] = '\\b',     ['\f'] = '\\f',     ['\n'] = '\\n',
+    ['\r'] = '\\r',     ['\t'] = '\\t',     ['\v'] = '\\v'
 
 }
 
@@ -123,9 +112,7 @@ end
 
 local function format(a)
 
-    local s = tostring(a)       s = escape(s)
-
-    if isString(a) then return quotes(s) end
+    local s = tostring(a)       s = escape(s)       if isString(a) then return quotes(s) end
 
     return tableFormat( a, s )
 
@@ -145,7 +132,7 @@ end
 
 local function copy(tbl)
 
-    local astro = Astro.Table       local copy = astro.Copy.shallow(tbl)
+    local copy = astro.Copy.shallow(tbl)
 
     -- Parse indexed nil values to strings. This is why there's a copy.
 
@@ -173,8 +160,6 @@ local function notEmpty(a)
 
 end
 
-local isVector = Astro.Vector.isVector
-
 local function pack(tbl)
 
     local former = tbl -- We need it later.
@@ -182,9 +167,7 @@ local function pack(tbl)
     local t = {} -- Table containing all the strings.
 
 
-    -- Track tables we've already processed to avoid infinite recursion.
-
-    local processed = {}
+    local processed = {} -- Track tables we've already processed to avoid infinite recursion.
     
     local function wasProcessed(tbl) return processed[tbl] end
     
@@ -234,13 +217,9 @@ local function pack(tbl)
         local isEmpty = table.isEmpty(copy)         local isFormer = tbl == former
         
         
-        local cycleName = cycleName(name)
-        
-        cycleName = concat( "<cycle>", cycleName )
+        local cycleName = cycleName(name)           cycleName = concat( "<cycle>", cycleName )
 
-        if processed[tbl] then add(cycleName) return end
-        
-        processed[tbl] = true
+        if processed[tbl] then add(cycleName) return end            processed[tbl] = true
         
 
         local curly = concat( name, '{' )
@@ -251,7 +230,6 @@ local function pack(tbl)
         local firstKey, lastKey
 
         for k,v in pairs(copy) do
-
 
             local a, b = next( copy, k )        
             
@@ -295,15 +273,11 @@ end
 
 local function wrap(...)
 
-    if not table.pack then return {...} end
-
-    local tbl = table.pack(...)     tbl.n = nil
+    if not table.pack then return {...} end             local tbl = table.pack(...)     tbl.n = nil
 
     return tbl
     
 end
 
 
-local tbl = wrap(...)       tbl = pack(tbl)
-
-return table.concat(tbl)
+local tbl = wrap(...)       tbl = pack(tbl)         return table.concat(tbl)

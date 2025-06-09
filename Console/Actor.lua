@@ -1,63 +1,49 @@
 
-local scale = SCREEN_HEIGHT / 720
+-- Can't load SVG gradients.
 
+local scale = SCREEN_HEIGHT / 720           local input = table.pack(...)
 
-local input = table.pack(...)
+local config = mindbox.Config               local showFading = config.showFading
+
+local margin = 0.915 -- The float based on the window's margin.
+
+local title = "mind$box - Console"
 
 
 local function console() return mindbox.Console end
 
-local config = mindbox.Config
+local function font() return mindbox.Theme.Font.File end
 
-local showFading = config.showFading
+local function texture() return mindbox.Theme.Window end
 
 
-local title = "mind$box - Console"
-
-local fontTheme = mindbox.Theme.Font
-local fontFile = fontTheme.File
-
--- We need to adjust every actor into our window.
--- The window will be the director.
-
--- Can't load SVG gradients.
-
-local margin = 0.915 -- The float based on the window's margin.
-
-local function windowFile() return mindbox.Theme.Window end
-
-local window = tapLua.Sprite {
+local Window = tapLua.Sprite {
     
-    Name = "Window",        Texture = windowFile(),
+    Name = "Window",        Texture = texture(),
 
     InitCommand=function(self)
         
-        mindbox.Console = self:GetParent()
+        mindbox.Console = self:GetParent()          local color = color("#909090")
 
-
-        local color = color("#909090")
-
-        self:diffuse(color):SetTextureFiltering(false)
-
-        self:queuecommand("SetSize")
+        self:diffuse(color):SetTextureFiltering(false):queuecommand("SetSize")
 
     end,
 
-    ReloadCommand=function(self) self:Load( windowFile() ) end,
+    ReloadCommand=function(self)
+        
+        local texture = texture()          self:Load(texture)
+    
+    end,
 
     SetSizeCommand=function(self)
 
-        local size = self:GetSize()
-
-        console():setSizeVector(size):queuecommand("PostInit")
+        local size = self:GetSize()         console():setSizeVector(size):queuecommand("PostInit")
 
     end,
 
     PostInitCommand=function()
 
-        if not input[1] then return end
-
-        mindbox.print(  table.unpack(input)  )
+        if not input[1] then return end             mindbox.print(  table.unpack(input)  )
     
     end
 
@@ -72,9 +58,7 @@ local function quad()
 
         PostInitCommand=function(self)
 
-            local size = self:GetParent():GetSize() * margin
-
-            self:setSizeVector(size)
+            local size = self:GetParent():GetSize() * margin        self:setSizeVector(size)
 
         end
 
@@ -83,30 +67,23 @@ local function quad()
 end
 
 
-local mainActorFrame = tapLua.ActorFrame {
+local ActorFrame = tapLua.ActorFrame {
 
     InitCommand=function(self) self:diffusealpha(0) end,
 
-	PostInitCommand=function(self)
-        
-        local w = self:GetWidth()       self:x( w * 0.625 )
-    
-    end,
+	PostInitCommand=function(self) local w = self:GetWidth() * 0.625        self:x(w) end,
 
 	FadeCommand=function(self)
 
-        self:diffusealpha(0)
-        
-        self:linear(0.5):diffusealpha(1)        self:sleep( self.time )
-        self:linear(0.5):diffusealpha(0)
+        local t = self.time
+
+        self:diffusealpha(0):linear(0.5):diffusealpha(1):sleep(t):linear(0.5):diffusealpha(0)
         
 	end,
 
 	OffCommand=function(self)
 
-		self:finishtweening()
-
-		self:RunCommandsOnChildren( function(child) child:finishtweening() end )
+		self:finishtweening():RunCommandsOnChildren( function(child) child:finishtweening() end )
 
 	end,
 
@@ -129,15 +106,11 @@ local mainActorFrame = tapLua.ActorFrame {
 
 		FadeCommand=function(self)
 
-			if not showFading then return end       self:diffusealpha(0)
+			if not showFading then return end           self:diffusealpha(0)
 
+            local scroll = console().scroll             if not scroll then return end
 
-            local scroll = console().scroll         if not scroll then return end
-
-
-            local time =  console().time - 1
-
-			self:sleep(0.5):linear(time):diffusealpha(1)
+            local time =  console().time - 1            self:sleep(0.5):linear(time):diffusealpha(1)
 
 		end
 
@@ -155,21 +128,19 @@ local mainActorFrame = tapLua.ActorFrame {
 
 		FadeCommand=function(self)
 
-			if not showFading then return end       self:diffusealpha(0)
+			if not showFading then return end           self:diffusealpha(0)
 
+            local scroll = console().scroll             if not scroll then return end
 
-            local scroll = console().scroll         if not scroll then return end
+            local time =  console().time - 1            self:diffusealpha(1)
 
-
-            local time =  console().time - 1
-
-			self:diffusealpha(1):sleep(0.5):linear(time):diffusealpha(0)
+			self:sleep(0.5):linear(time):diffusealpha(0)
 
 		end
 
 	},
 
-	window,
+	Window,
 
 	Def.ActorFrame { -- Console title.
 
@@ -193,13 +164,9 @@ local mainActorFrame = tapLua.ActorFrame {
 
 		Def.BitmapText {
 
-			Font = fontFile,          Text = title,
+			Font = font(),          Text = title,
 
-			InitCommand=function(self)
-                
-                local color = color("#959595")      self:diffuse(color) 
-            
-            end
+			InitCommand=function(self) local color = color("#959595")      self:diffuse(color) end
 
 		}
 
@@ -209,6 +176,6 @@ local mainActorFrame = tapLua.ActorFrame {
 
 return Def.ActorFrame {
     
-    mainActorFrame,         InitCommand=function(self) self:zoom(scale):CenterY() end
+    ActorFrame,         InitCommand=function(self) self:zoom(scale):CenterY() end
 
 }

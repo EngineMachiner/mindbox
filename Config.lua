@@ -1,7 +1,5 @@
 
-local astro = Astro.Type
-
-local isString = astro.isString
+local astro = Astro.Type            local isString = astro.isString
 
 local getFiles = tapLua.FILEMAN.getFiles
 

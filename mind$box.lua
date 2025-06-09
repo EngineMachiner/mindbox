@@ -15,12 +15,7 @@ for i,v in ipairs(modules) do LoadModule( "mind$box/" .. v .. ".lua" ) end
 
 mindbox.concat = function(...) return loadfile( path .. "Concat.lua" )(...) end
 
+mindbox.console = function(...) return loadfile( path .. "Console/Actor.lua" )(...) end
+
 
 mindbox.setWindow(1)        mindbox.setFont(1)
-
-
-mindbox.console = function(...)
-
-	return loadfile( path .. "Console/Actor.lua" )(...)
-
-end
