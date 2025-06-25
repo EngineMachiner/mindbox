@@ -63,7 +63,7 @@ Be aware that to successfully install mind$box in your game build, it's importan
 ---
 
 Remember, if you're having problems with the texture being white, not showing up 
-and you're using legacy builds you should enable only OpenGL as renderer in 
+and you're using legacy builds, you should enable only OpenGL as renderer in 
 your `Preferences.ini` due to D3D not being able to render textures in these builds.
 ```
 VideoRenderers=opengl
