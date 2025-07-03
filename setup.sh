@@ -33,7 +33,6 @@ echo "Done."
 cat << EOF
 
 Add the console persistent actor in ScreenSystemLayer aux:
-
 mindbox.console()
 
 EOF

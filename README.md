@@ -10,13 +10,23 @@ https://github.com/user-attachments/assets/6b68068e-5170-4935-9646-03ab4d3cb311
 mind$box focuses to be compatible with newer game builds, so it may not be
 compatible with older versions.
 
-## Usage
+## Installation
 
-Be aware that to successfully install mind$box in your game build, it's important to have a **basic understanding of scripting and theme structure**.
+  1. Install [tapLua](https://github.com/EngineMachiner/tapLua).
 
-  1. Use [tapLua](https://github.com/EngineMachiner/tapLua).
+### Bash
+
+mind$box can be installed using the next bash command in the game directory:
+```console
+curl -o mindbox.sh https://raw.githubusercontent.com/EngineMachiner/tapLua/refs/heads/master/mindbox.sh
+./mindbox.sh; rm mindbox.sh
+```
 
 ---
+
+Or it can be installed manually:
+
+Be aware that to successfully install mind$box in your game build, it's important to have a **basic understanding of scripting and theme structure**.
 
 ### OutFox
 
@@ -25,14 +35,11 @@ Be aware that to successfully install mind$box in your game build, it's importan
   git clone https://github.com/EngineMachiner/mindbox mind\$box
   ```
 
-  3. Load tapLua first, then load mind$box and add the console actor
-  in `ScreenSystemLayer aux.lua` to make the console actor persistent:
+  3. Load tapLua first, then load mind$box once through a script. 
+  
+  4. Add the console actor in `ScreenSystemLayer aux.lua` to make the console actor persistent:
   ```lua
   -- Themes/_fallback/BGAnimations/ScreenSystemLayer aux.lua
-
-  LoadModule("tapLua/tapLua.lua")
-  LoadModule("mind$box/mind$box.lua")
-
   return mindbox.console()
   ```
 
@@ -44,20 +51,17 @@ Be aware that to successfully install mind$box in your game build, it's importan
   git clone https://github.com/EngineMachiner/mindbox mind\$box
   ```
 
-  3. Load tapLua first, then load mind$box and add the console actor
-  in `ScreenSystemLayer aux.lua` to make the console actor persistent:
+  3. Load tapLua first, then load mind$box once through a script. 
+  
+  4. Add the console actor in `ScreenSystemLayer aux.lua` to make the console actor persistent:
   ```lua
   -- Themes/_fallback/BGAnimations/ScreenSystemLayer aux.lua
-
-  dofile("Modules/tapLua/tapLua.lua")
-  LoadModule("mind$box/mind$box.lua")
-
   return mindbox.console()
   ```
 
 ---
 
-  4. Use `mindbox.print(...)` to print into the console or `mindbox.sysPrint(...)`
+  5. Use `mindbox.print(...)` to print into the console or `mindbox.sysPrint(...)`
   if you want to use the system message function.
 
 ---
