@@ -14,13 +14,13 @@ compatible with older versions.
 
   1. Install [tapLua](https://github.com/EngineMachiner/tapLua).
 
-### Bash
+### Linux
 
-mind$box can be installed using the next bash command in the game directory:
-```console
-curl -o mindbox.sh https://raw.githubusercontent.com/EngineMachiner/tapLua/refs/heads/master/mindbox.sh
-./mindbox.sh; rm mindbox.sh
-```
+  2. Run the next commands in the game directory:
+  ```console
+  curl -o mindbox.sh https://raw.githubusercontent.com/EngineMachiner/tapLua/refs/heads/master/mindbox.sh
+  ./mindbox.sh; rm mindbox.sh
+  ```
 
 ---
 
@@ -28,41 +28,22 @@ Or it can be installed manually:
 
 Be aware that to successfully install mind$box in your game build, it's important to have a **basic understanding of scripting and theme structure**.
 
-### OutFox
-
-  2. Clone the repository in the fallback's Modules folder.
+  2. Clone the repository in the modules folder.
   ```
   git clone https://github.com/EngineMachiner/mindbox mind\$box
   ```
 
-  3. Load tapLua first, then load mind$box once through a script. 
-  
-  4. Add the console actor in `ScreenSystemLayer aux.lua` to make the console actor persistent:
+  3. Load it after tapLua.
   ```lua
-  -- Themes/_fallback/BGAnimations/ScreenSystemLayer aux.lua
-  return mindbox.console()
+    LoadModule("mind$box/mind$box.lua") -- After loading tapLua...
   ```
 
-### Legacy
-
-  2. Clone the repository in the same Modules folder following the same
-  steps for tapLua cloning.
-  ```
-  git clone https://github.com/EngineMachiner/mindbox mind\$box
-  ```
-
-  3. Load tapLua first, then load mind$box once through a script. 
-  
-  4. Add the console actor in `ScreenSystemLayer aux.lua` to make the console actor persistent:
+  4. Add the console actor as a persistent actor:
   ```lua
-  -- Themes/_fallback/BGAnimations/ScreenSystemLayer aux.lua
-  return mindbox.console()
+  mindbox.console() -- fallbacks's ScreenSystemLayer aux.lua
   ```
 
----
-
-  5. Use `mindbox.print(...)` to print into the console or `mindbox.sysPrint(...)`
-  if you want to use the system message function.
+  5. Use `mindbox.print(...)` to print on the console or `mindbox.sysPrint(...)` to use the system message function.
 
 ---
 
