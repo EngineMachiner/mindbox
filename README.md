@@ -18,7 +18,7 @@ compatible with older versions.
 
   2. Run the next commands in the game directory:
   ```console
-  curl -o mindbox.sh https://raw.githubusercontent.com/EngineMachiner/tapLua/refs/heads/master/mindbox.sh
+  curl -o mindbox.sh https://raw.githubusercontent.com/EngineMachiner/mindbox/refs/heads/master/mindbox.sh
   ./mindbox.sh; rm mindbox.sh
   ```
 
