@@ -38,12 +38,7 @@ Be aware that to successfully install mind$box in your game build, it's importan
     LoadModule("mind$box/mind$box.lua") -- After loading tapLua...
   ```
 
-  4. Add the console actor as a persistent actor:
-  ```lua
-  mindbox.console() -- fallbacks's ScreenSystemLayer aux.lua
-  ```
-
-  5. Use `mindbox.print(...)` to print on the console or `mindbox.sysPrint(...)` to use the system message function.
+  4. Use `mindbox.print(...)` to print on the console or `mindbox.sysPrint(...)` to use the system message function.
 
 ---
 
