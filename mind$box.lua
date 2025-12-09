@@ -19,3 +19,6 @@ mindbox.console = function(...) return loadfile( path .. "Console/Actor.lua" )(.
 
 
 mindbox.setWindow(1)        mindbox.setFont(1)
+
+
+local Console = mindbox.console()       tapLua.PersistentActors.add(Console)
