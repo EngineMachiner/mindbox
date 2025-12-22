@@ -67,6 +67,14 @@ local function quad()
 end
 
 
+local function onMouseScroll( self )
+
+    self:stoptweening():RunCommandsOnChildren( function(child) child:stoptweening() end )
+
+    self:diffusealpha(1):sleep(8):linear(0.5):diffusealpha(0)
+
+end
+
 local ActorFrame = tapLua.ActorFrame {
 
     InitCommand=function(self) self:diffusealpha(0) end,
@@ -86,6 +94,8 @@ local ActorFrame = tapLua.ActorFrame {
 		self:finishtweening():RunCommandsOnChildren( function(child) child:finishtweening() end )
 
 	end,
+
+    MouseWheelUpMessageCommand = onMouseScroll,           MouseWheelDownMessageCommand = onMouseScroll,
 
     
     -- Background.

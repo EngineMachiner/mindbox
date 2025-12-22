@@ -44,7 +44,7 @@ local function setTextPos(self)
     local h2 = self:GetZoomedHeight()       local timeOn = timeOn / self:GetZoom()
 
 
-    local offset = 100      local y = h2 * 0.5 + offset     self:y(y)
+    local offset = 100      local y = h2 * 0.5 + offset     self:y(y)       self.Y[1] = y
 
     p.scroll = false            p.time = timeOn
 
@@ -55,7 +55,7 @@ local function setTextPos(self)
     
     local time = length * timeOn / h1               local y = y - length - offset - 300
 
-    self:sleep(timeOn):linear(time):y(y)
+    self:sleep(timeOn):linear(time):y(y)            self.Y[2] = y
 
 
     p.scroll = true             p.time = timeOn * 2 + time
@@ -90,7 +90,7 @@ return Def.ActorFrame {
                 
                 self.color = textColor          self.setZoom = setTextZoom
 
-                self.setPos = setTextPos        self:halign(0)
+                self.setPos = setTextPos        self:halign(0)      self.Y = {}
 
             end,
 
@@ -116,6 +116,18 @@ return Def.ActorFrame {
                 
                 console():playcommand("Fade")
 
+            end,
+
+            MouseWheelUpMessageCommand=function(self)
+
+                if self:GetY() - 50 < self.Y[2] then return end         self:stoptweening():addy( -50 )
+            
+            end,
+
+            MouseWheelDownMessageCommand=function(self)
+                
+                if self:GetY() + 50 > self.Y[1] then return end         self:stoptweening():addy( 50 )
+            
             end
                 
         },
