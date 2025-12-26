@@ -68,10 +68,12 @@ end
 
 
 local function onMouseScroll( self )
+    
+    if self:GetTweenTimeLeft() == 0 then return end
 
     self:stoptweening():RunCommandsOnChildren( function(child) child:stoptweening() end )
 
-    self:diffusealpha(1):sleep(8):linear(0.5):diffusealpha(0)
+    self:diffusealpha(1):sleep(4):linear(0.5):diffusealpha(0)
 
 end
 

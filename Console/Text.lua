@@ -90,7 +90,7 @@ return Def.ActorFrame {
                 
                 self.color = textColor          self.setZoom = setTextZoom
 
-                self.setPos = setTextPos        self:halign(0)      self.Y = {}
+                self.setPos = setTextPos        self:halign(0)      self.Y = { 0, 0 }
 
             end,
 
@@ -120,13 +120,13 @@ return Def.ActorFrame {
 
             MouseWheelUpMessageCommand=function(self)
 
-                if self:GetY() - 50 < self.Y[2] then return end         self:stoptweening():addy( -50 )
+                if self:GetY() + 50 > self.Y[1] then return end         self:stoptweening():addy( 50 )
             
             end,
 
             MouseWheelDownMessageCommand=function(self)
                 
-                if self:GetY() + 50 > self.Y[1] then return end         self:stoptweening():addy( 50 )
+                if self:GetY() - 50 < self.Y[2] then return end         self:stoptweening():addy( -50 )
             
             end
                 
