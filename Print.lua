@@ -14,7 +14,7 @@ local function onSong(s)
 
 	local song = GAMESTATE:GetCurrentSong()         if not song then return s end
 
-	song = song:GetSongDir()        if not s:match(song) then return end
+	song = song:GetSongDir()        if not s:match(song) then return s end
 
 
     -- 1 is the starting position and last argument omit patterns.
